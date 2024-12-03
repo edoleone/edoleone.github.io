@@ -5,4 +5,4 @@ My name is Edoardo, I am a Mechanical Engineering student at UCLA. I am a studen
 This website contains my personal information, my CV, and my personal project portfolio.
 
 **Projects:**
-* AOS C111/204 final project [project report, `project.md`]|[code, `project.md`]
+* AOS C111/204 final project [project report, `project.md`]|[code, `code.md`]
