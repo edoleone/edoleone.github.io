@@ -2,7 +2,7 @@
 
 ## My Project
 
-I applied machine learning techniques to investigate... Below is my report.
+I applied machine learning techniques to investigate a dataset containing health data from 299 patients. In particular, I used Random FOrest Regressor to build a predictive model for the risk of fatal heart attack. I then built a simple user interfce where the user (i.e. a medical professional) can input patient-specific health data and determine whether said patient is at risk of a fatal heart attack. 
 
 ***
 
