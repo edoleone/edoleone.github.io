@@ -6,5 +6,5 @@ This website contains my personal information, my CV, and my personal project po
 
 **Projects:**
 * AOS C111/204 final project:
-* * [project report, `project.md`](project.md)
-* * [code, `code.md`](code.md)
+ * [project report, `project.md`](project.md)
+ * [code, `code.md`](code.md)
