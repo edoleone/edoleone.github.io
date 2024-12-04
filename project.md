@@ -88,7 +88,7 @@ Figure 2 below shows a visual depiction of each feature's importance. In the his
 
 I then compared the performance of the model with all features included to the model with only ejection fraction and serum creatinine included. Below are the confusion matrices for both:
 
-![](assets/IMG/img13.png){: width="500" }
+![](assets/IMG/img17.png){: width="500" }
 *Figure 3: Confusion matrix for model with all features included.*
 
 ![](assets/IMG/img11.png){: width="500" }
@@ -101,6 +101,8 @@ The training and test R^2 scores for both models were:
 * Important features only:
   * Training: 0.75
   * Test: 0.75
+
+Accuracy dropped from 0.75 to 0.74 going from the 2-feature model to the full model, and precision also dropped from 0.73 to 0.63.
 
 I also plotted the ROC curve for both models, as shown below:
 
@@ -139,10 +141,11 @@ Seeing that the test R^2 score was higher for the 2-feature model than for the f
 
 Nonetheless, the Area Under the Curve on the ROC curve was larger for the full model (0.84 vs 0.78). This might suggest that the full model has better classification ability. However, as seen in Figure 5 and Figure 6, the ROC curves were very jagged for this particular dataset, indicating their poor reliability. This is most likely to be attributed to the small size of the dataset.
 
-Given the nature and applications of this model, the most important factor when judging the model's performance is the 
-
+Given the nature and applications of this model, the most important factor when judging the model's performance is keeping the number of False Negative predictions low. As such, it might be a good idea to lower the threshold for a DEATH_EVENT prediction of 1 from 0.5 to a lower value. 
 
 ## Conclusion
+
+In conclusion, the 2-feature model performed better than the full model in terms of accuracy, precision, and R^2 test score. Having an efficient 2-feature model would also be more practical for real-world applications as it would allow for quicker diagnoses and immediate preventive treatment. Given a larger dataset of the same type, it would be interesting to try to predict the proper length of follow-up period given the patient's health data, perhaps adding in a risk factor.
 
 
 ## References
@@ -151,19 +154,4 @@ Given the nature and applications of this model, the most important factor when 
 
 [back](./)
 
-## Notes on stuff to add
-done * discussion on r^2 to check for overfitting
-* effect of changing threshold on increasing recall
-done * how feature ranking was obtained for LR
-done * why choosing number of iterations
-done * why the ROC is jagged
-done * why 5 folds for kfold cross validation
-done * discussion of area under the curve for ROC
-* extension on calculating proper follow up period with risk factor if given a larger dataset
-
-
-
-```python
-
-```
 
