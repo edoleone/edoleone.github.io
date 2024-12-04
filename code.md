@@ -27,8 +27,7 @@ data = pd.read_csv(filepath)
 
 data['age'] = data['age'].astype(int)
 data['platelets'] = data['platelets'].astype(int)
-data.describe()
-```
+data.describe().round(2)```
 ```python
 data.hist(figsize=(15,12))
 plt.suptitle('heart failure dataset data histogram' )
@@ -39,41 +38,9 @@ x = data.drop('DEATH_EVENT', axis=1)
 x = x.drop('time', axis=1)
 y = data['DEATH_EVENT']
 
-kf = KFold(n_splits=5, shuffle=True, random_state=0)
-
-for train_index, test_index in kf.split(x):
-    X_train, X_test = x.iloc[train_index], x.iloc[test_index]
-    y_train, y_test = y.iloc[train_index], y.iloc[test_index]
-
-    regr = LogisticRegression(max_iter=2000)
-    regr.fit(X_train, y_train)
-
-    y_pred = regr.predict(X_test)
-    y_pred = np.where(y_pred >= 0.5, 1, 0)
-
-importances = np.abs(regr.coef_[0])  
-indices = np.argsort(importances)[::-1]
-
-feature_names = X_train.columns
-
-print("Feature ranking:")
-for f in range(X_train.shape[1]):
-    print("%d. feature %s (%f)" % (f + 1, feature_names[indices[f]], importances[indices[f]]))
-
-plt.figure()
-plt.title("Feature importances")
-plt.bar(range(X_train.shape[1]), importances[indices], color="r", align="center")
-plt.xticks(range(X_train.shape[1]), feature_names[indices], rotation=90) 
-plt.xlim([-1, X_train.shape[1]])
-plt.show()
-```
-```python
-x = data.drop('DEATH_EVENT', axis=1)
-x = x.drop('time', axis=1)
-y = data['DEATH_EVENT']
-
 confusion_matrices = {}
 scores = {}
+testscores = {}
 
 columns_to_drop = x.columns
 
@@ -152,6 +119,8 @@ for column in columns_to_drop:
 
     column_accuracies[column] = accuracy
 
+    testscores[column] = avg_test_score.round(3)
+
     confusion_matrices[column] = avg_cm
     scores[column] = {
         'accuracy': accuracy,
@@ -161,13 +130,23 @@ for column in columns_to_drop:
         'specificity': specificity
     }
 
-print(f"The highest False Negative rate occurred when: {highest_fnr_column} was dropped")
-
-ranked_columns = sorted(column_accuracies.items(), key=lambda item: item[1], reverse=True)
+ranked_columns = sorted(testscores.items(), key=lambda item: item[1], reverse=True)
 print()
 
-for column, accuracy in ranked_columns:
-    print(f"Column: {column}, Accuracy: {accuracy}")
+for column, score in ranked_columns:
+    print(f"Column: {column}, Test R^2 score: {score}")
+
+## plot a histogram with the column names on the x axis and the scores from testscores on the y axis
+column_names = list(testscores.keys())
+scores = list(testscores.values())
+
+plt.bar(column_names, scores)
+plt.ylabel("R^2 Scores")
+plt.title("Feature Ranking")
+plt.xticks(rotation=90)  
+plt.tight_layout()  
+plt.ylim(0.6, 0.8)
+plt.show()
 ```
 ```python
 x = data.drop('DEATH_EVENT', axis=1)
@@ -180,6 +159,9 @@ kf = KFold(n_splits=5, shuffle=True, random_state=0)
 
 accuracies = []
 recalls = []
+precisions = []
+f1_scores = []
+specificities = []
 
 def evaluate_and_plot(X, y, column_dropped=None):
     cms = []
@@ -202,10 +184,13 @@ def evaluate_and_plot(X, y, column_dropped=None):
     accuracy = (TP + TN) / (TP + TN + FP + FN)
     accuracies.append(accuracy)
     precision = TP / (TP + FP) if (TP + FP) != 0 else 0
+    precisions.append(precision)
     recall = TP / (TP + FN) if (TP + FN) != 0 else 0
     recalls.append(recall)
     f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) != 0 else 0
+    f1_scores.append(f1_score)
     specificity = TN / (TN + FP) if (TN + FP) != 0 else 0
+    specificities.append(specificity)
 
 num_to_drop_start = 1
 num_to_drop = 1
@@ -217,9 +202,8 @@ for num_to_drop in range(num_to_drop_start, len(columns_to_drop)):
   evaluate_and_plot(X_final, y, column_dropped=columns_to_drop_final)
 
 
-x_values = range(num_to_drop_start, len(columns_to_drop))  
 
-fig, axes = plt.subplots(1, 2, figsize=(12, 5))  
+fig, axes = plt.subplots(1, 5, figsize=(12, 5))  
 
 x_values = range(num_to_drop_start, len(columns_to_drop))
 max_accuracy = max(accuracies)
@@ -228,7 +212,6 @@ axes[0].plot(x_values, accuracies)
 axes[0].plot(x_max, max_accuracy, 'ro')  
 axes[0].set_xlabel("Number of Dropped Columns")
 axes[0].set_ylabel("Accuracy")
-axes[0].set_title("Accuracy vs. Number of Dropped Columns")
 axes[0].annotate(f"({x_max}, {max_accuracy:.2f})",
                  xy=(x_max, max_accuracy),
                  xytext=(x_max + 0.5, max_accuracy + 0.01),
@@ -240,11 +223,45 @@ axes[1].plot(x_values, recalls)
 axes[1].plot(x_max, max_recall, 'ro')  
 axes[1].set_xlabel("Number of Dropped Columns")
 axes[1].set_ylabel("Recall")
-axes[1].set_title("Recall vs. Number of Dropped Columns")
 axes[1].annotate(f"({x_max}, {max_recall:.2f})",
                  xy=(x_max, max_recall),
                  xytext=(x_max + 0.5, max_recall + 0.01),
                  arrowprops=dict(arrowstyle="->", connectionstyle="arc3"))
+
+max_precision = max(precisions)
+x_max = precisions.index(max_precision) + num_to_drop_start
+axes[2].plot(x_values, precisions)
+axes[2].plot(x_max, max_precision, 'ro')
+axes[2].set_xlabel("Number of Dropped Columns")
+axes[2].set_ylabel("Precision")
+axes[2].annotate(f"({x_max}, {max_precision:.2f})",
+                 xy=(x_max, max_precision),
+                 xytext=(x_max + 0.5, max_precision + 0.0),
+                 arrowprops=dict(arrowstyle="->", connectionstyle="arc3"))
+
+max_f1 = max(f1_scores)
+x_max = f1_scores.index(max_f1) + num_to_drop_start
+axes[3].plot(x_values, f1_scores)
+axes[3].plot(x_max, max_f1, 'ro')  
+axes[3].set_xlabel("Number of Dropped Columns")
+axes[3].set_ylabel("F1 score")
+axes[3].annotate(f"({x_max}, {max_f1:.2f})",
+                 xy=(x_max, max_f1),
+                 xytext=(x_max + 0.5, max_f1 + 0.01),
+                 arrowprops=dict(arrowstyle="->", connectionstyle="arc3"))
+
+max_specificity = max(specificities)
+x_max = specificities.index(max_specificity) + num_to_drop_start
+axes[4].plot(x_values, specificities)
+axes[4].plot(x_max, max_specificity, 'ro')  
+axes[4].set_xlabel("Number of Dropped Columns")
+axes[4].set_ylabel("Specificity")
+axes[4].annotate(f"({x_max}, {max_specificity:.2f})",
+                 xy=(x_max, max_specificity),
+                 xytext=(x_max + 0.5, max_specificity + 0.01),
+                 arrowprops=dict(arrowstyle="->", connectionstyle="arc3"))
+
+
 
 plt.tight_layout()
 
@@ -254,7 +271,7 @@ remaining_columns = X_final.columns
 print("Remaining Columns:", remaining_columns)
 ```
 ```python
-x = data[['serum_creatinine', 'ejection_fraction','age','high_blood_pressure']]  
+x = data[['serum_creatinine','ejection_fraction']]  
 y = data['DEATH_EVENT']
 
 kf = KFold(n_splits=5, shuffle=True, random_state=0)
@@ -299,7 +316,7 @@ disp = ConfusionMatrixDisplay(confusion_matrix=avg_cm)
 disp.plot(cmap='Blues', values_format='.0f')
 plt.xlabel(f"Predicted Label\nAccuracy: {accuracy:.2f}, Precision: {precision:.2f}\nRecall: {recall:.2f}, F1-score: {f1_score:.2f}\nSpecificity: {specificity:.2f}")
 plt.ylabel("True Label")
-plt.title(f"Average Confusion Matrix with interest feature only")
+plt.title(f"Average Confusion Matrix with interest features only")
 plt.text(0, 0.8, 'False Neg', ha='center', va='center', color='red')
 plt.text(1, 0.8, 'True Pos', ha='center', va='center', color='white')
 plt.text(0, -0.2, 'True Neg', ha='center', va='center', color='white')
@@ -310,12 +327,10 @@ print()
 ```
 ```python
 serum_creatinine = float(input("Enter serum creatinine value: "))
-age = float(input("Enter age of the patient: "))
 ejection_fraction = float(input("Enter ejection fraction: "))
-high_blood_pressure = float(input("Enter high blood pressure: "))
 
-user_input = pd.DataFrame([[serum_creatinine, ejection_fraction, age, high_blood_pressure]],
-                           columns=['serum_creatinine', 'ejection_fraction', 'age', 'high_blood_pressure'])  
+user_input = pd.DataFrame([[serum_creatinine, ejection_fraction]],
+                           columns=['serum_creatinine', 'ejection_fraction'])  
 
 # Make prediction
 prediction = regr.predict(user_input)
@@ -377,7 +392,7 @@ disp = ConfusionMatrixDisplay(confusion_matrix=avg_cm)
 disp.plot(cmap='Blues', values_format='.0f')
 plt.xlabel(f"Predicted Label\nAccuracy: {accuracy:.2f}, Precision: {precision:.2f}\nRecall: {recall:.2f}, F1-score: {f1_score:.2f}\nSpecificity: {specificity:.2f}")
 plt.ylabel("True Label")
-plt.title(f"Average Confusion Matrix - Dropped Column: {column}")
+plt.title(f"Average Confusion Matrix - full model")
 plt.text(0, 0.8, 'False Neg', ha='center', va='center', color='red')
 plt.text(1, 0.8, 'True Pos', ha='center', va='center', color='white')
 plt.text(0, -0.2, 'True Neg', ha='center', va='center', color='white')
