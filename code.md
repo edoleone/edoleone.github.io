@@ -405,3 +405,5 @@ roc_display = RocCurveDisplay.from_estimator(regr,X_test,y_test)
 plt.plot([0,1],[0,1],linestyle='--')
 plt.show
 ```
+
+[back](./)
