@@ -149,7 +149,9 @@ In conclusion, the 2-feature model performed better than the full model in terms
 
 
 ## References
+
 [1] “Heart Failure Prediction.” Kaggle, 20 June 2020, www.kaggle.com/datasets/andrewmvd/heart-failure-clinical-data/data?select=heart_failure_clinical_records_dataset.csv.
+
 [2] Chicco, D., Jurman, G. Machine learning can predict survival of patients with heart failure from serum creatinine and ejection fraction alone. BMC Med Inform Decis Mak 20, 16 (2020). https://doi.org/10.1186/s12911-020-1023-5
 
 [back](./)
