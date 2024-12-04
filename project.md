@@ -88,11 +88,19 @@ Figure 2 below shows a visual depiction of each feature's importance. In the his
 
 I then compared the performance of the model with all features included to the model with only ejection fraction and serum creatinine included. Below are the confusion matrices for both:
 
-![](assets/IMG/img10.png){: width="500" }
+![](assets/IMG/img13.png){: width="500" }
 *Figure 3: Confusion matrix for model with all features included [1].*
 
-![](assets/IMG/img10.png){: width="500" }
-*Figure 2: Confusion matrix for model with only ejection fraction and serum creatinine [1].*
+![](assets/IMG/img11.png){: width="500" }
+*Figure 4: Confusion matrix for model with only ejection fraction and serum creatinine [1].*
+
+I also plotted the ROC curve for both models, as shown below:
+
+![](assets/IMG/img13.png){: width="500" }
+*Figure 5: ROC curve for model with all features included [1].*
+
+![](assets/IMG/img12.png){: width="500" }
+*Figure 6: ROC curve for model with all features included [1].*
 
 ## Discussion
 
