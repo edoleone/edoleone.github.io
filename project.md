@@ -42,6 +42,7 @@ Table 1 below shows a table summary of the dataset:
 |max|95\.0|1\.0|7861\.0|1\.0|80\.0|1\.0|850000\.0|9\.4|148\.0|1\.0|1\.0|285\.0|1\.0|
 
 Figure 1 below, instead, shows a visual depiction of each feature's distribution:
+
 ![](assets/IMG/img1.png){: width="500" }
 *Figure 1: Histogram distribution of all features in the dataset [1].*
 
@@ -64,19 +65,22 @@ Finally, I built a simple user interface to make predictions using the model wit
 ## Results
 
 Upon using the REF method for feature ranking, two features stood out in terms of importance: serum creatinine and ejection fraction. Here is the list of features ranked from least important to most important based on the R^2 test score they produced:
-* Column: diabetes, Accuracy: 0.756
-* Column: serum_sodium, Accuracy: 0.756
-* Column: smoking, Accuracy: 0.753
-* Column: anaemia, Accuracy: 0.749
-* Column: high_blood_pressure, Accuracy: 0.746
-* Column: creatinine_phosphokinase, Accuracy: 0.742
-* Column: age, Accuracy: 0.739
-* Column: platelets, Accuracy: 0.736
-* Column: sex, Accuracy: 0.736
-* Column: serum_creatinine, Accuracy: 0.709
-* Column: ejection_fraction, Accuracy: 0.699
+* Column: diabetes, Test R^2 score: 0.756
+* Column: serum_sodium, Test R^2 score: 0.756
+* Column: smoking, Test R^2 score: 0.753
+* Column: anaemia, Test R^2 score: 0.749
+* Column: high_blood_pressure, Test R^2 score: 0.746
+* Column: creatinine_phosphokinase, Test R^2 score: 0.742
+* Column: age, Test R^2 score: 0.739
+* Column: platelets, Test R^2 score: 0.736
+* Column: sex, Test R^2 score: 0.736
+* Column: serum_creatinine, Test R^2 score: 0.709
+* Column: ejection_fraction, Test R^2 score: 0.699
 
+Figure 2 below shows a visual depiction of each feature's importance. In the histogram, the shorter columns represent more important features, since the R^2 score was worse when these features were removed:
 
+![](assets/IMG/img1.png){: width="500" }
+*Figure 2: Feature importances [1].*
 
 ## Discussion
 
