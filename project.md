@@ -46,9 +46,13 @@ Figure 1 below, instead, shows a visual depiction of each feature's distribution
 ![](assets/IMG/img1.png){: width="500" }
 *Figure 1: Histogram distribution of all features in the dataset [1].*
 
+It must be mentioned that DEATH_EVENT, the target output variable, is slightly class imbalanced since there are twice as many patients who did not experience heart failure than patients who did.
+
 ## Preprocessing
 
-Firstly, I converted all the non-integer data to integer. I then performed feature ranking for Linear Regression. The results of the feature ranking showed that the 'time' feature dominated over all others by far. This makes sense, because a longer follow-up period for a patient with pregressed heart issues means a longer period of time during which new issues can arise. However, I decided to remove the 'time' feature from the analysis. Since the aim of the project is to predict the chance of a fatal heart failure at the first appointment, it makes no sense to include the length of the follow up period in the analysis.
+Firstly, I converted all the non-integer data to integer. 
+
+I then performed feature ranking for Linear Regression. The results of the feature ranking showed that the 'time' feature dominated over all others by far. This is because a longer follow-up period, for a patient with pregressed heart issues, means a longer period of time during which new issues can arise. I then decided to remove the 'time' feature from the analysis. Since the aim of the project is to predict the chance of a fatal heart failure at the first appointment, it would be counterintuitive to include the length of the follow up period in the analysis.
 
 ## Modelling
 
@@ -58,13 +62,13 @@ I set the number of iteration at 20000 in order for all features to converge. I 
 
 After removing the 'time' feature, I performed feature ranking again. The method chosen for feature ranking was Recursive Feature Elimination (RFE), whereby one feature at the time is removed from the model with replacement and the features yielding the greatest negative impact when removed are deemed to be the most important ones. 
 
-Once the important features were identified, I dropped all other features from the dataset and I compared the confusion matrices and ROC curves of the model with all features and with the interest features only.
+The standout features in terms of importance were ejection fraction and serum creatinine. Once the important features were identified, I dropped all other features from the dataset and I compared the confusion matrices and ROC curves of the model with all features and with the interest features only.
 
 Finally, I built a simple user interface to make predictions using the model with the important features only.
 
 ## Results
 
-Upon using the REF method for feature ranking, two features stood out in terms of importance: serum creatinine and ejection fraction. Here is the list of features ranked from least important to most important based on the R^2 test score they produced:
+Below is the list of features ranked from least important to most important based on the R^2 test score they produced when using the RFE method:
 * Column: diabetes, Test R^2 score: 0.756
 * Column: serum_sodium, Test R^2 score: 0.756
 * Column: smoking, Test R^2 score: 0.753
@@ -77,10 +81,18 @@ Upon using the REF method for feature ranking, two features stood out in terms o
 * Column: serum_creatinine, Test R^2 score: 0.709
 * Column: ejection_fraction, Test R^2 score: 0.699
 
-Figure 2 below shows a visual depiction of each feature's importance. In the histogram, the shorter columns represent more important features, since the R^2 score was worse when these features were removed:
+Figure 2 below shows a visual depiction of each feature's importance. In the histogram, shorter columns represent more important features, since the R^2 score was worse when these features were removed:
 
-![](assets/IMG/img1.png){: width="500" }
+![](assets/IMG/img10.png){: width="500" }
 *Figure 2: Feature importances [1].*
+
+I then compared the performance of the model with all features included to the model with only ejection fraction and serum creatinine included. Below are the confusion matrices for both:
+
+![](assets/IMG/img10.png){: width="500" }
+*Figure 3: Confusion matrix for model with all features included [1].*
+
+![](assets/IMG/img10.png){: width="500" }
+*Figure 2: Confusion matrix for model with only ejection fraction and serum creatinine [1].*
 
 ## Discussion
 
