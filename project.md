@@ -27,6 +27,7 @@ The dataset includes health data from 299 patients who all already had left vent
 * time: follow up period in between appointments
 
 Table 1 below shows a table summary of the dataset:
+
 |index|age|anaemia|creatinine\_phosphokinase|diabetes|ejection\_fraction|high\_blood\_pressure|platelets|serum\_creatinine|serum\_sodium|sex|smoking|time|DEATH\_EVENT|
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 |count|299\.0|299\.0|299\.0|299\.0|299\.0|299\.0|299\.0|299\.0|299\.0|299\.0|299\.0|299\.0|299\.0|
