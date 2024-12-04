@@ -44,7 +44,7 @@ Table 1 below shows a table summary of the dataset:
 Figure 1 below, instead, shows a visual depiction of each feature's distribution:
 
 ![](assets/IMG/img1.png){: width="500" }
-*Figure 1: Histogram distribution of all features in the dataset [1].*
+*Figure 1: Histogram distribution of all features in the dataset.*
 
 It must be mentioned that DEATH_EVENT, the target output variable, is slightly class imbalanced since there are twice as many patients who did not experience heart failure than patients who did.
 
@@ -56,9 +56,9 @@ I then performed feature ranking for Linear Regression. The results of the featu
 
 ## Modelling
 
-For the machine learning model, I chose to use Logistic Regression since the target output variable is a boolean (classification problem). I considered using Random Forest Regression, but given the small size of the dataset, this resulted in very low R^2 scores. To contrast this, I tried increasing the maximum depth of the Random Forest, but this ultimately just resulted in the model overfitting the training data. 
+For the machine learning model, I chose to use Logistic Regression since the target output variable is a boolean (classification problem). I considered using Random Forest Regression, but given the small size of the dataset, this resulted in very low R^2 scores. To contrast this, I tried increasing the maximum depth of the Random Forest, but this ultimately just resulted in the model overfitting the training data. I know that the model was overfitting the data because the difference between training and test R^2 scores was significant (>0.1).
 
-I set the number of iteration at 20000 in order for all features to converge. I implemented k-fold cross validation in the model in order to make it more robust and reduce overfitting. I chose a 5 fold cross validation method, specifically. 
+I set the number of iteration at 20000 in order for all features to converge. I implemented k-fold cross validation in the model in order to make it more robust and reduce overfitting. I chose a 5 fold cross validation method, specifically. I thought about using a 10 fold model, given the small size of my dataset, but this resulted in the folds being extremely small, hence the 5 fold model choice.
 
 After removing the 'time' feature, I performed feature ranking again. The method chosen for feature ranking was Recursive Feature Elimination (RFE), whereby one feature at the time is removed from the model with replacement and the features yielding the greatest negative impact when removed are deemed to be the most important ones. 
 
@@ -84,25 +84,62 @@ Below is the list of features ranked from least important to most important base
 Figure 2 below shows a visual depiction of each feature's importance. In the histogram, shorter columns represent more important features, since the R^2 score was worse when these features were removed:
 
 ![](assets/IMG/img10.png){: width="500" }
-*Figure 2: Feature importances [1].*
+*Figure 2: Feature importances.*
 
 I then compared the performance of the model with all features included to the model with only ejection fraction and serum creatinine included. Below are the confusion matrices for both:
 
 ![](assets/IMG/img13.png){: width="500" }
-*Figure 3: Confusion matrix for model with all features included [1].*
+*Figure 3: Confusion matrix for model with all features included.*
 
 ![](assets/IMG/img11.png){: width="500" }
-*Figure 4: Confusion matrix for model with only ejection fraction and serum creatinine [1].*
+*Figure 4: Confusion matrix for model with only ejection fraction and serum creatinine.*
+
+The training and test R^2 scores for both models were:
+* All features:
+  * Training: 0.77
+  * Test: 0.74
+* Important features only:
+  * Training: 0.75
+  * Test: 0.75
 
 I also plotted the ROC curve for both models, as shown below:
 
-![](assets/IMG/img13.png){: width="500" }
-*Figure 5: ROC curve for model with all features included [1].*
+![](assets/IMG/img16.png){: width="500" }
+*Figure 5: ROC curve for model with all features included.*
 
 ![](assets/IMG/img12.png){: width="500" }
-*Figure 6: ROC curve for model with all features included [1].*
+*Figure 6: ROC curve for model with all features included.*
+
+Finally, I used the following code snippet to create an interactive user interface for a medical professional to input patient data and obtain the DEATH_EVENT value. This was made using the model with important features only:
+```python
+serum_creatinine = float(input("Enter serum creatinine value: "))
+ejection_fraction = float(input("Enter ejection fraction: "))
+
+user_input = pd.DataFrame([[serum_creatinine, ejection_fraction]],
+                           columns=['serum_creatinine', 'ejection_fraction'])  
+
+# Make prediction
+prediction = regr.predict(user_input)
+predicted_death_event = np.where(prediction >= 0.5, 1, 0)[0]
+
+print(f"Predicted Death Event: {predicted_death_event}")
+```
+
+Figure 7 and Figure 8 show examples of the model predicting a value of 1 for a patient with really poor values, and a value of 0 for a patient with relatively healthy values:
+
+![](assets/IMG/img15.png){: width="500" }
+*Figure 7: Predictive model making a prediction of 1.*
+
+![](assets/IMG/img14.png){: width="500" }
+*Figure 8: Predictive model making a prediction of 0.*
 
 ## Discussion
+
+Seeing that the test R^2 score was higher for the 2-feature model than for the full model (0.75 vs 0.74), it can be inferred that the 2-feature model's predictions match the data better than the full model's predictions. 
+
+Nonetheless, the Area Under the Curve on the ROC curve was larger for the full model (0.84 vs 0.78). This might suggest that the full model has better classification ability. However, as seen in Figure 5 and Figure 6, the ROC curves were very jagged for this particular dataset, indicating their poor reliability. This is most likely to be attributed to the small size of the dataset.
+
+Given the nature and applications of this model, the most important factor when judging the model's performance is the 
 
 
 ## Conclusion
@@ -111,24 +148,19 @@ I also plotted the ROC curve for both models, as shown below:
 ## References
 [1] “Heart Failure Prediction.” Kaggle, 20 June 2020, www.kaggle.com/datasets/andrewmvd/heart-failure-clinical-data/data?select=heart_failure_clinical_records_dataset.csv.
 [2] Chicco, D., Jurman, G. Machine learning can predict survival of patients with heart failure from serum creatinine and ejection fraction alone. BMC Med Inform Decis Mak 20, 16 (2020). https://doi.org/10.1186/s12911-020-1023-5
-[3]
 
 [back](./)
 
 ## Notes on stuff to add
-* discussion on r^2 to check for overfitting
+done * discussion on r^2 to check for overfitting
 * effect of changing threshold on increasing recall
-* how feature ranking was obtained for LR
-* why choosing number of iterations
-* why the ROC is jagged
-* why 5 folds for kfold cross validation
-* discussion of area under the curve for ROC
+done * how feature ranking was obtained for LR
+done * why choosing number of iterations
+done * why the ROC is jagged
+done * why 5 folds for kfold cross validation
+done * discussion of area under the curve for ROC
 * extension on calculating proper follow up period with risk factor if given a larger dataset
 
-  <p>
-When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they are
-  \[x = {-b \pm \sqrt{b^2-4ac} \over 2a}.\]
-</p>
 
 
 ```python
