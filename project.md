@@ -37,15 +37,9 @@ Table 1 below shows a table summary of the dataset:
 |50%|60\.0|0\.0|250\.0|0\.0|38\.0|0\.0|262000\.0|1\.1|137\.0|1\.0|0\.0|115\.0|0\.0|
 |75%|70\.0|1\.0|582\.0|1\.0|45\.0|1\.0|303500\.0|1\.4|140\.0|1\.0|1\.0|203\.0|1\.0|
 |max|95\.0|1\.0|7861\.0|1\.0|80\.0|1\.0|850000\.0|9\.4|148\.0|1\.0|1\.0|285\.0|1\.0|
-*Table 1: Summarized dataset.*
 
 Figure 1 below, instead, shows a visual depiction of each feature's distribution:
-
-
-
-
 ![](assets/IMG/datapenguin.png){: width="500" }
-
 *Figure 1: Here is a caption for my diagram. This one shows a pengiun [1].*
 
 ## Preprocessing
