@@ -137,6 +137,8 @@ Figure 7 and Figure 8 show examples of the model predicting a value of 1 for a p
 
 ## Discussion
 
+The main concern with this dataset is the small size. Also, I suspect that many of the features are cross-correlated (i.e. high blood pressure and smoking), so some of the issues with the full fewature model might be stemming from this. In the future, it would be wise to investigate this aspect of the dataset. 
+
 Seeing that the test R^2 score was higher for the 2-feature model than for the full model (0.75 vs 0.74), it can be inferred that the 2-feature model's predictions match the data better than the full model's predictions. 
 
 Nonetheless, the Area Under the Curve on the ROC curve was larger for the full model (0.84 vs 0.78). This might suggest that the full model has better classification ability. However, as seen in Figure 5 and Figure 6, the ROC curves were very jagged for this particular dataset, indicating their poor reliability. This is most likely to be attributed to the small size of the dataset.
