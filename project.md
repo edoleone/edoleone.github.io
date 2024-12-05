@@ -8,11 +8,11 @@ I applied machine learning techniques to investigate a dataset containing health
 
 ## Abstract 
 
-Heart attacks are widely known to be the most common cause of death across most demographics. Hence, being able to predict the risk of a heart attack is extremely important in the medical field and models that successfully accomplish this can potentially save many lives. The following analysis of Chicco and Jurman's "Heart Failure Prediction" dataset [1] shows that heart failure can be predicted using a patient's age, ejection fraction, blood pressure (low/high), and serum creatinine value only. Including all features results in an arguable worse predictive model, since accuracy drops from 0.75 to 0.74 and precision drops from 0.73 to 0.63.
+Heart attacks are widely known to be the most common cause of death across most demographics. Hence, being able to predict the risk of a heart attack is extremely important in the medical field and models that successfully accomplish this can potentially save many lives. The following analysis of Chicco and Jurman's "Heart Failure Prediction" dataset [1] shows that heart failure can be predicted using a patient's age, ejection fraction, blood pressure (low/high), and serum creatinine value only. Including all features results in an arguably worse predictive model, since accuracy drops from 0.75 to 0.74 and precision drops from 0.73 to 0.63.
 
 ## Data
 
-The dataset includes health data from 299 patients who all already had left ventricular disfunction and had a history of non-fatal heart failure [2]. There are input 12 features, and one output feature being whether the patient died of heart failure in the period between that appointment and the follow-up appointment. Here is a description of the input features:
+The dataset includes health data from 299 patients who all already had left ventricular dysfunction and had a history of non-fatal heart failure [2]. There are 12 input features, and one output feature being whether the patient died of heart failure in the period between that appointment and the follow-up appointment. Here is a description of the input features:
 * age: patient's age
 * anaemia: decrease of red blood cells or hemoglobin (boolean)
 * creatinine phosphokinase : level of the CPK enzyme in the blood (mcg/L)
@@ -63,13 +63,13 @@ It must be mentioned that DEATH_EVENT, the target output variable, is slightly c
 
 Firstly, I converted all the non-integer data to integer. 
 
-I then performed feature ranking for Logistic Regression. The results of the feature ranking showed that the 'time' feature dominated over all others by far. This is because a longer follow-up period, for a patient with pregressed heart issues, means a longer period of time during which new issues can arise. I then decided to remove the 'time' feature from the analysis. Since the aim of the project is to predict the chance of a fatal heart failure at the first appointment, it would be counterintuitive to include the length of the follow up period in the analysis.
+I then performed feature ranking for Logistic Regression. The results of the feature ranking showed that the 'time' feature dominated over all others by far. This is because a longer follow-up period, for a patient with pre-established heart issues, means a longer period of time during which new issues can arise. I then decided to remove the 'time' feature from the analysis. Since the aim of the project is to predict the chance of a fatal heart failure at the first appointment, it would be counterintuitive to include the length of the follow up period in the analysis.
 
 ## Modelling
 
 For the machine learning model, I chose to use Logistic Regression since the target output variable is a boolean (classification problem). I considered using Random Forest Regression, but given the small size of the dataset, this resulted in very low R^2 scores. To contrast this, I tried increasing the maximum depth of the Random Forest, but this ultimately just resulted in the model overfitting the training data. I know that the model was overfitting the data because the difference between training and test R^2 scores was significant (>0.1).
 
-I set the number of iteration at 20000 in order for all features to converge. I implemented k-fold cross validation in the model in order to make it more robust and reduce overfitting. I chose a 5 fold cross validation method, specifically. I thought about using a 10 fold model, given the small size of my dataset, but this resulted in the folds being extremely small, hence the 5 fold model choice.
+I set the number of iterations at 20000 in order for all features to converge. I implemented k-fold cross validation in the model in order to make it more robust and reduce overfitting. I chose a 5 fold cross validation method, specifically. I thought about using a 10 fold model, given the small size of my dataset, but this resulted in the folds being extremely small, hence the 5 fold model choice.
 
 After removing the 'time' feature, I performed feature ranking again. The method chosen for feature ranking was Recursive Feature Elimination (RFE), whereby one feature at the time is removed from the model with replacement and the features yielding the greatest negative impact when removed are deemed to be the most important ones. 
 
@@ -148,7 +148,7 @@ Figure 7 and Figure 8 show examples of the model predicting a value of 1 for a p
 
 ## Discussion
 
-The main concern with this dataset is the small size. Also, I suspect that many of the features are cross-correlated (i.e. high blood pressure and smoking), so some of the issues with the full fewature model might be stemming from this. In the future, it would be wise to investigate this aspect of the dataset. 
+The main concern with this dataset is the small size. Also, I suspect that many of the features may be cross-correlated (i.e. high blood pressure and smoking), so some of the issues with the full feature model might be stemming from this. In the future, it would be wise to investigate this aspect of the dataset. 
 
 Seeing that the test R^2 score was higher for the 2-feature model than for the full model (0.75 vs 0.74), it can be inferred that the 2-feature model's predictions match the data better than the full model's predictions. 
 
@@ -158,7 +158,7 @@ Given the nature and applications of this model, the most important factor when 
 
 ## Conclusion
 
-In conclusion, the 2-feature model performed better than the full model in terms of accuracy, precision, and R^2 test score. Having an efficient 2-feature model would also be more practical for real-world applications as it would allow for quicker diagnoses and immediate preventive treatment. Given a larger dataset of the same type, it would be interesting to try to predict the proper length of follow-up period given the patient's health data, perhaps adding in a risk factor.
+In conclusion, the 2-feature model performed better than the full model in terms of accuracy, precision, and R^2 test score. Having an efficient 2-feature model would also be more practical for real-world applications as it would allow for quicker diagnosis and immediate preventive treatment. Given a larger dataset of the same type, it would be interesting to try to predict the proper length of follow-up period given the patient's health data, perhaps adding in a risk factor.
 
 
 ## References
