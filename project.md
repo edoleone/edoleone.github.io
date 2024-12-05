@@ -30,7 +30,7 @@ A patient was considered to have anaemia if the haematocrit levels were lower th
 
 Table 1 below shows a table summary of the dataset:
 
-|index|age|anaemia|creatinine\_phosphokinase|diabetes|ejection\_fraction|
+|index|age|anaemia|creatinine\_phosph.|diabetes|ejection\_fract.|
 |---|---|---|---|---|---|
 |count|299\.0|299\.0|299\.0|299\.0|299\.0|
 |mean|60\.83|0\.43|581\.84|0\.42|38\.08|
@@ -41,7 +41,7 @@ Table 1 below shows a table summary of the dataset:
 |75%|70\.0|1\.0|582\.0|1\.0|45\.0|
 |max|95\.0|1\.0|7861\.0|1\.0|80\.0|
 
-|index|serum\_creatinine|serum\_sodium|sex|smoking|time|DEATH\_EVENT|
+|index|serum\_creat.|serum\_sodium|sex|smoking|time|DEATH\_EVENT|
 |---|---|---|---|---|---|---|
 |count|299\.0|299\.0|299\.0|299\.0|299\.0|299\.0|
 |mean|1\.39|136\.63|0\.65|0\.32|130\.26|0\.32|
