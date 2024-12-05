@@ -2,7 +2,7 @@
 
 ## My Project
 
-I applied machine learning techniques to investigate a dataset containing health data from 299 patients. In particular, I used Logistic Regression to build a predictive model for the risk of fatal heart attack. I then built a simple user interfce where the user (i.e. a medical professional) can input patient-specific health data and determine whether said patient is at risk of a fatal heart attack. 
+I applied machine learning techniques to investigate a dataset containing health data from 299 patients. In particular, I used Logistic Regression to build a predictive model for the risk of fatal heart attack. I then built a simple user interface where the user (i.e. a medical professional) can input patient-specific health data and determine whether said patient is at risk of a fatal heart attack. 
 
 ***
 
@@ -52,7 +52,7 @@ It must be mentioned that DEATH_EVENT, the target output variable, is slightly c
 
 Firstly, I converted all the non-integer data to integer. 
 
-I then performed feature ranking for Linear Regression. The results of the feature ranking showed that the 'time' feature dominated over all others by far. This is because a longer follow-up period, for a patient with pregressed heart issues, means a longer period of time during which new issues can arise. I then decided to remove the 'time' feature from the analysis. Since the aim of the project is to predict the chance of a fatal heart failure at the first appointment, it would be counterintuitive to include the length of the follow up period in the analysis.
+I then performed feature ranking for Logistic Regression. The results of the feature ranking showed that the 'time' feature dominated over all others by far. This is because a longer follow-up period, for a patient with pregressed heart issues, means a longer period of time during which new issues can arise. I then decided to remove the 'time' feature from the analysis. Since the aim of the project is to predict the chance of a fatal heart failure at the first appointment, it would be counterintuitive to include the length of the follow up period in the analysis.
 
 ## Modelling
 
